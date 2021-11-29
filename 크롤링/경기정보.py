@@ -36,6 +36,7 @@ for team in listTeam:
 
     # 결과 담을 리스트 초기화
     resultList=[]
+
     
     # 팀 선택
     driver.find_element_by_xpath("//ul[@class='tab-schedule']/li[@attr-value = '"+team+"']").click()
@@ -44,6 +45,7 @@ for team in listTeam:
     for year in listYear:
         # 연도 바꾸기
         driver.find_element_by_xpath("//select[@id='ddlYear']/option[text()='" + str(year) + "']").click()
+        resultYearList = []
 
         # 달 반복
         for month in listMonth:
@@ -87,12 +89,14 @@ for team in listTeam:
                     if i!=0:
                         if temp[3] != resultList[-1][3]:
                             resultList.append(temp)
+                            resultYearList.append(temp)
                     else:
                         resultList.append(temp)
+                        resultYearList.append(temp)
                         i=i+1
 
         # 팀별 년도별 csv 만들기
-        data = pd.DataFrame(resultList)
+        data = pd.DataFrame(resultYearList)
         data.columns = ['year','date', 'score', 'place']
         data.head()
         data.to_csv('../데이터/년도별/'+year+'/'+year+team + '.csv', encoding='UTF-8')
