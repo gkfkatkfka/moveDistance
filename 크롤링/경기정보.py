@@ -70,16 +70,18 @@ for team in listTeam:
                         continue
 
                     # 제2구장으로 쓰는 곳 제1구장으로 변환
-                    if len(tds[7].text.strip()) == '청주': # 한화
-                        tds[7].text.strip = '대전'
-
-                    if len(tds[7].text.strip()) == '포항': # 삼성
-                        tds[7].text.strip = '대구'
-                    
-                    if len(tds[7].text.strip()) == '울산': # 롯데
-                        tds[7].text.strip = '사직'
+                    if tds[7].text.strip() == '청주':  # 한화
+                        tds[7] = '대전'
+                    elif tds[7].text.strip() == '포항':  # 삼성
+                        tds[7] = '대구'
+                    elif tds[7].text.strip() == '울산':  # 롯데
+                        tds[7] = '사직'
+                    elif tds[7].text.strip() == '마산':  # nc
+                        tds[7] = '창원'
+                    else:
+                        tds[7]=tds[7].text.strip()
                         
-                    temp = [year, tds[0].text.strip(), tds[2].text.strip(), tds[7].text.strip()]
+                    temp = [year, tds[0].text.strip(), tds[2].text.strip(), tds[7]]
                     
                     # 연속적인 장소 지우는 절차
                     if i!=0:
@@ -88,6 +90,7 @@ for team in listTeam:
                     else:
                         resultList.append(temp)
                         i=i+1
+
     # csv 만들기
     data = pd.DataFrame(resultList)
     data.columns = ['year','date', 'score', 'place']
