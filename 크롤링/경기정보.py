@@ -91,7 +91,13 @@ for team in listTeam:
                         resultList.append(temp)
                         i=i+1
 
-    # csv 만들기
+        # 팀별 년도별 csv 만들기
+        data = pd.DataFrame(resultList)
+        data.columns = ['year','date', 'score', 'place']
+        data.head()
+        data.to_csv('../데이터/년도별/'+year+'/'+year+team + '.csv', encoding='UTF-8')
+
+    # 팀별 csv 만들기
     data = pd.DataFrame(resultList)
     data.columns = ['year','date', 'score', 'place']
     data.head()
