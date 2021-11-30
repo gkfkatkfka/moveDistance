@@ -35,8 +35,6 @@ with open('../데이터/거리 엑셀.csv', 'r', encoding='UTF-8') as distanceFi
         inArr[-1] = inArr[-1].replace("\n", "")
         moveArr.append(inArr)
 
-#print(moveArr)
-
 # 2017HH만 해보기
 f = open('../데이터/년도별/2017/2017HH.csv', 'r', encoding='UTF-8')
 
