@@ -25,7 +25,8 @@ csvArr=[['year','NC','OB','KT','LG','WO','HT','LT','SS','SK','HH']]
 # 구장 별 이동거리 배열로 저장
 moveArr = []  # 이동거리 저장 배열
 
-with open('../데이터/거리 엑셀.csv', 'r', encoding='UTF-8') as distanceFile:
+# 나중에 여기서 에러나면 거리 엑셀.csv가 경로에 잘 있는지 확인
+with open('../데이터/이동거리/거리 엑셀.csv', 'r', encoding='UTF-8') as distanceFile:
     distanceRead = csv.reader(distanceFile)
     
     # 들어온 데이터 정제
