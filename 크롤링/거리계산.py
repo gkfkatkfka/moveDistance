@@ -2,7 +2,7 @@
 * 소스파일 이름 : 거리계산.py
 * 소스파일 목적 : 년도별 팀별 이동거리 구하기
 * 세부 목적
-: '../데이터/팀별 경기정보' 안에 있는 데이터는 가져오기
+: '../데이터/팀별 경기순위' 안에 있는 데이터는 가져오기
 : 년도별 팀별 가져오기(year로 년도별 정보 가져오기)
 : 년도별 csv 파일로 저장(구단, 이동거리)
 : '../데이터/이동거리'에 년도별 저장
@@ -66,8 +66,6 @@ for year in listYear:
 
             distance += float(moveArr[row][col])
 
-        #print(year,team)
-        #print(round(distance,2))
         teamCsvArr.append(round(distance, 2))
 
     csvArr.append(teamCsvArr)

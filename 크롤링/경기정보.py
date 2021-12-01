@@ -10,7 +10,6 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import pandas as pd
 
-
 '''변수 리스트 설정'''
 listYear=['2017', '2018', '2019', '2020', '2021'] # 연도 리스트
 #listYear=['2017']
@@ -32,12 +31,11 @@ driver.find_element_by_xpath("//select[@id='ddlSeries']/option[text()='KBO 정�
 
 
 for team in listTeam:
-    i=0
+    i = 0
 
     # 결과 담을 리스트 초기화
     resultList=[]
 
-    
     # 팀 선택
     driver.find_element_by_xpath("//ul[@class='tab-schedule']/li[@attr-value = '"+team+"']").click()
 
@@ -71,7 +69,7 @@ for team in listTeam:
                     if len(tds[7].text.strip()) != 2:
                         continue
 
-                    # 제2구장으로 쓰는 곳 제1구장으로 변환
+                    # 3. 제2구장으로 쓰는 곳 제1구장으로 변환
                     if tds[7].text.strip() == '청주':  # 한화
                         tds[7] = '대전'
                     elif tds[7].text.strip() == '포항':  # 삼성
@@ -85,15 +83,15 @@ for team in listTeam:
                         
                     temp = [year, tds[0].text.strip(), tds[2].text.strip(), tds[7]]
                     
-                    # 연속적인 장소 지우는 절차
-                    if i!=0:
+                    # 4. 연속적인 장소 지우는 절차
+                    if i != 0:
                         if temp[3] != resultList[-1][3]:
                             resultList.append(temp)
                             resultYearList.append(temp)
                     else:
                         resultList.append(temp)
                         resultYearList.append(temp)
-                        i=i+1
+                        i = i+1
 
         # 팀별 년도별 csv 만들기
         data = pd.DataFrame(resultYearList)
@@ -105,7 +103,7 @@ for team in listTeam:
     data = pd.DataFrame(resultList)
     data.columns = ['year','date', 'score', 'place']
     data.head()
-    data.to_csv('../데이터/팀별 경기정보/'+team + '.csv', encoding='UTF-8')
+    data.to_csv('../데이터/팀별 경기순위/'+team + '.csv', encoding='UTF-8')
 
 
 
