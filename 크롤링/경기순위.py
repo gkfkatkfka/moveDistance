@@ -18,9 +18,10 @@ listYear = ['2017', '2018', '2019', '2020', '2021']  # 연도 리스트
 # 드라이버 가져오기
 driver = webdriver.Chrome('C://Users//gkfka//Downloads//chromedriver_win32//chromedriver.exe')
 
-i = 1
+
 
 for year in listYear:
+	i = 1
 	resultArr = []
 	
 	url = driver.get('https://sports.news.naver.com/kbaseball/record/index?category=kbo&year=' + year)
@@ -41,9 +42,9 @@ for year in listYear:
 			
 	# 팀별 년도별 csv 만들기
 	data = pd.DataFrame(resultArr)
-	data.columns = ['rank','team', 'winRate']
+	data.columns = ['rank', 'team', 'winRate']
 	data.head()
-	data.to_csv('../데이터/경기순위/'+year + '.csv', encoding='UTF-8',index=False)
+	data.to_csv('../데이터/경기순위/'+year + '.csv', encoding='UTF-8', index=False)
 
 
 
