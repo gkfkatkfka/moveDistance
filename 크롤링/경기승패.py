@@ -25,8 +25,6 @@ def switchName(year,key):
 	else:
 		local = { "OB": "두산", "WO": "키움", "HT": "KIA", "SS": "삼성", "HH": "한화", "LT": "롯데","SK":"SSG"}.get(key, key)
 	return local
- 
-
 
 # 구장 별 이동거리에 사용
 moveArr = [] # 구장 별 이동거리 저장
@@ -116,10 +114,4 @@ for year in listYear:
 			data = pd.concat([data, moveData], axis=1)
 			data.columns = ['year', 'date', '경기', '승패여부', '거리']
 			data.head()
-			data.to_csv('../데이터/년도별_승률_거리/'+year+team+'.csv', encoding='UTF-8', index=False)
-
-
-
-
-
-
+			data.to_csv('../데이터/년도별_승률_거리/'+year+'/'+year+team+'.csv', encoding='UTF-8', index=False)
