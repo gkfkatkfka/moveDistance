@@ -16,10 +16,16 @@ def switch(key):
     return local
 
 # 팀 이름 변환
-def switchName(key):
-    local = { "OB": "두산", "키움": "WO", "넥센": "WO", "KIA": "HT", "삼성": "SS", "SSG": "SK", "한화": "HH"}.get(key, key)
-    #local = { "NC": "NC", "OB": "두산", "KT": "KT", "LG": "LG", "대전": 5, "광주": 6, "대구": 7, "사직": 8, "창원": 9}.get(key, key)
-    return local
+def switchName(year,key):
+	local=""
+	if year<2018:
+		local = { "OB": "두산", "WO": "넥센", "HT": "KIA", "SS": "삼성", "HH": "한화","LT":"롯데" }.get(key, key)
+	elif year<2021:
+		local = { "OB": "두산", "WO": "키움", "HT": "KIA", "SS": "삼성", "HH": "한화", "LT": "롯데" }.get(key, key)
+	else:
+		local = { "OB": "두산", "WO": "키움", "HT": "KIA", "SS": "삼성", "HH": "한화", "LT": "롯데","SK":"SSG"}.get(key, key)
+	return local
+ 
 
 
 # 구장 별 이동거리에 사용
@@ -29,7 +35,7 @@ compareArr = []# 지역 담을 배열
 
 # 필요한 리스트
 listYear=['2017', '2018', '2019', '2020', '2021'] # 연도 리스트
-listTeam = ['KT','LG','WO','HT','LT','SS','HH','NC','SK','OB'] # 팀 리스트(nc, 두산, kt, lg, 키움, 기아, 롯데, 삼성, ssg, 한화)
+listTeam = ['KT','WO','HT','LT','SS','HH','NC','SK','OB','LG'] # 팀 리스트(nc, 두산, kt, lg, 키움, 기아, 롯데, 삼성, ssg, 한화)
 
 # 한글, 영어만 추출하는 정규식 => 팀명 추출할 때 사용
 string = re.compile('[^ 가-힣 a-z A-Z]+')
@@ -57,60 +63,60 @@ for year in listYear:
 		
 		# csv 파일 헤더 제외 읽어오기
 		information = csv.reader(f)
-
-	# 정보 한 줄씩 불러와서 비교 배열 넣기
-	for info in information:
-		# 거리 가져오기
-		compareArr.append(info[4])
 		
-		# 경기 내용(vs) 정보 가져오기
-		strData = info[3]
-		
-		# vs로 일차적으로 문자열 분할
-		strList = strData.split('vs')
-
-		try:
-			# 숫자만 추출
-			firstScore = int(re.findall('\d+', strList[0])[0])
-			secondScore = int(re.findall('\d+', strList[1])[0])
-		except IndexError:
-			# 경기취소나 이런걸로 경기 안 했을 경우
-			firstScore = 0
-			secondScore = 0
-		
-		# 팀만 추출
-		firstTeam = string.sub('', strList[0])
-		secondTeam = string.sub('', strList[1])
-		
-		# 0:패배 , 1: 승리
-		if firstScore > secondScore and firstTeam == switchName(team):
-			temp = [info[1], info[2], info[3], 1]
-		elif firstScore < secondScore and secondTeam == switchName(team):
-			temp = [info[1], info[2], info[3], 1]
-		elif firstScore == secondScore:
-			temp = [info[1], info[2], info[3], -1]
-		else:
-			temp = [info[1], info[2], info[3], 0, ]
-		
-		searchList.append(temp)
-
-	# 현재와 이전 구장 사이의 거리 구하기(moveArr 이용)
-	for i in range(1, len(compareArr) - 1):
-		row = switch(compareArr[i - 1])
-		col = switch(compareArr[i])
-		
-		distance = float(moveArr[row][col])
+		# 정보 한 줄씩 불러와서 비교 배열 넣기
+		for info in information:
+			# 거리 가져오기
+			compareArr.append(info[4])
+			
+			# 경기 내용(vs) 정보 가져오기
+			strData = info[3]
+			
+			# vs로 일차적으로 문자열 분할
+			strList = strData.split('vs')
 	
-		teamArr.append(round(distance, 2))
-	
-		# csv 만들기
-		data = pd.DataFrame(searchList)
-		moveData = pd.DataFrame(teamArr)
+			try:
+				# 숫자만 추출
+				firstScore = int(re.findall('\d+', strList[0])[0])
+				secondScore = int(re.findall('\d+', strList[1])[0])
+			except IndexError:
+				# 경기취소나 이런걸로 경기 안 했을 경우
+				firstScore = 0
+				secondScore = 0
+			
+			# 팀만 추출
+			firstTeam = string.sub('', strList[0])
+			secondTeam = string.sub('', strList[1])
+			
+			# 0:패배 , 1: 승리
+			if firstScore > secondScore and firstTeam == switchName(int(year),team):
+				temp = [info[1], info[2], info[3], 1]
+			elif firstScore < secondScore and secondTeam == switchName(int(year),team):
+				temp = [info[1], info[2], info[3], 1]
+			elif firstScore == secondScore:
+				temp = [info[1], info[2], info[3], -1]
+			else:
+				temp = [info[1], info[2], info[3], 0, ]
+			
+			searchList.append(temp)
+
+		# 현재와 이전 구장 사이의 거리 구하기(moveArr 이용)
+		for i in range(1, len(compareArr) - 1):
+			row = switch(compareArr[i - 1])
+			col = switch(compareArr[i])
+			
+			distance = float(moveArr[row][col])
 		
-		data = pd.concat([data, moveData], axis=1)
-		data.columns = ['year', 'date', '경기', '승패여부', '거리']
-		data.head()
-		data.to_csv('../데이터/년도별_승률_거리/'+year+team+'.csv', encoding='UTF-8', index=False)
+			teamArr.append(round(distance, 2))
+		
+			# csv 만들기
+			data = pd.DataFrame(searchList)
+			moveData = pd.DataFrame(teamArr)
+			
+			data = pd.concat([data, moveData], axis=1)
+			data.columns = ['year', 'date', '경기', '승패여부', '거리']
+			data.head()
+			data.to_csv('../데이터/년도별_승률_거리/'+year+team+'.csv', encoding='UTF-8', index=False)
 
 
 
