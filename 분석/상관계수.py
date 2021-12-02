@@ -9,13 +9,11 @@ import matplotlib.pyplot as plt
 
 df =  pd.read_csv('../데이터/경기순위_이동거리/total.csv', encoding='UTF-8')
 
-corrData = df[['distance','rank']]
+corrData = df[['distance','rank','winRate']]
 
 # 두 변수간의 상관관계 분석
 corr1 =corrData['distance'].corr(corrData['rank'])
-corr2 = df['rank'].corr(df['distance'])
+corr2 =corrData['distance'].corr(corrData['winRate'])
 
-#print(corrData)
-print(corr1)
-
-#-0.119073308443464
+print('rank 상관계수: ', corr1)#-0.119073308443464
+print('winRate 상관계수: ', corr2)
