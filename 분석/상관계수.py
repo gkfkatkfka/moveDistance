@@ -17,3 +17,5 @@ corr2 = df['rank'].corr(df['distance'])
 
 #print(corrData)
 print(corr1)
+
+#-0.119073308443464
