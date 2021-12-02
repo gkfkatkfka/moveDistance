@@ -26,6 +26,7 @@ for year in listYear:
 		dataArr.append(info)
 
 print(dataArr)
+
 # 팀별 년도별 csv 만들기
 data = pd.DataFrame(dataArr)
 data.columns = ['team', 'distance','rank','winRate']
